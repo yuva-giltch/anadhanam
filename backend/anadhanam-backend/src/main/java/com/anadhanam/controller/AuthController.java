@@ -1,5 +1,6 @@
 package com.anadhanam.controller;
 
+import com.anadhanam.dto.LoginRequest;
 import com.anadhanam.dto.RegisterRequest;
 import com.anadhanam.model.User;
 import com.anadhanam.service.UserService;
@@ -26,25 +27,48 @@ public class AuthController {
     public ResponseEntity<Map<String, String>> register(
             @Valid @RequestBody RegisterRequest request) {
 
-        User user = userService.registerUser(request);
+        try {
+            User user = userService.registerUser(request);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(
-            Map.of(
-                "message", "Registration successful!",
-                "userId", user.getId(),
-                "email", user.getEmail(),
-                "role", user.getRole()
-            )
-        );
+            return ResponseEntity.status(HttpStatus.CREATED).body(
+                Map.of(
+                    "message", "Registration successful!",
+                    "userId", user.getId(),
+                    "email", user.getEmail(),
+                    "role", user.getRole()
+                )
+            );
+
+        } catch (IllegalArgumentException exception) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(
+                Map.of("error", exception.getMessage())
+            );
+        }
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<Map<String, String>> handleDuplicateEmail(
-            IllegalArgumentException exception) {
+    @PostMapping("/login")
+    public ResponseEntity<Map<String, String>> login(
+            @Valid @RequestBody LoginRequest request) {
 
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(
-            Map.of("error", exception.getMessage())
-        );
+        try {
+            User user = userService.loginUser(
+                request.getEmail(),
+                request.getPassword()
+            );
+
+            return ResponseEntity.ok(
+                Map.of(
+                    "message", "Login successful!",
+                    "userId", user.getId(),
+                    "email", user.getEmail(),
+                    "role", user.getRole()
+                )
+            );
+
+        } catch (IllegalArgumentException exception) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+                Map.of("error", "Invalid email or password")
+            );
+        }
     }
 }
-

@@ -11,6 +11,19 @@ import java.util.Map;
 
 @Service
 public class UserService {
+    public User loginUser(String email, String password) {
+
+    String normalizedEmail = email.toLowerCase().trim();
+
+    User user = users.get(normalizedEmail);
+
+    if (user == null ||
+        !passwordEncoder.matches(password, user.getPasswordHash())) {
+        throw new IllegalArgumentException("Invalid email or password");
+    }
+
+    return user;
+}
 
     private final PasswordEncoder passwordEncoder;
 
