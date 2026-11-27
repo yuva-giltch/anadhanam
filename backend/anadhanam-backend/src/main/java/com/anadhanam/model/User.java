@@ -1,5 +1,9 @@
 package com.anadhanam.model;
 
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
+
+@DynamoDbBean
 public class User {
 
     private String id;
@@ -42,6 +46,7 @@ public class User {
         this.fullName = fullName;
     }
 
+    @DynamoDbPartitionKey
     public String getEmail() {
         return email;
     }
@@ -82,4 +87,3 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 }
-
