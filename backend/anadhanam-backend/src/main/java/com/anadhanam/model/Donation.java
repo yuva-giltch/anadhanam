@@ -18,7 +18,10 @@ public class Donation {
     private String pickupAddress;
     private String status;
     private String createdAt;
-
+    private String claimedByNgoEmail;
+    private String claimedAt;
+    private String assignedVolunteerEmail;
+    private String pickupStatus;
     public Donation() {
     }
 
@@ -118,4 +121,35 @@ public class Donation {
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
+    public String getClaimedByNgoEmail() {
+    return claimedByNgoEmail;
+}
+
+public void setClaimedByNgoEmail(String claimedByNgoEmail) {
+    this.claimedByNgoEmail = claimedByNgoEmail;
+}
+
+public String getClaimedAt() {
+    return claimedAt;
+}
+
+public void setClaimedAt(String claimedAt) {
+    this.claimedAt = claimedAt;
+}
+
+public String getAssignedVolunteerEmail() {
+    return assignedVolunteerEmail;
+}
+
+public void setAssignedVolunteerEmail(String assignedVolunteerEmail) {
+    this.assignedVolunteerEmail = assignedVolunteerEmail;
+}
+
+public String getPickupStatus() {
+    return pickupStatus;
+}
+
+public void setPickupStatus(String pickupStatus) {
+    this.pickupStatus = pickupStatus;
+}
 }
