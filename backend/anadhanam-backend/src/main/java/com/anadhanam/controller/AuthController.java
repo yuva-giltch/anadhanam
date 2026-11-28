@@ -4,6 +4,7 @@ import com.anadhanam.dto.LoginRequest;
 import com.anadhanam.dto.RegisterRequest;
 import com.anadhanam.model.User;
 import com.anadhanam.service.UserService;
+import com.anadhanam.service.JwtService;
 
 import jakarta.validation.Valid;
 
@@ -18,9 +19,11 @@ import java.util.Map;
 public class AuthController {
 
     private final UserService userService;
+    private final JwtService jwtService;
 
-    public AuthController(UserService userService) {
+    public AuthController(UserService userService, JwtService jwtService) {
         this.userService = userService;
+        this.jwtService = jwtService;
     }
 
     @PostMapping("/register")
@@ -56,12 +59,18 @@ public class AuthController {
                 request.getPassword()
             );
 
+            String token = jwtService.generateToken(
+                user.getEmail(),
+                user.getRole()
+            );
+
             return ResponseEntity.ok(
                 Map.of(
                     "message", "Login successful!",
                     "userId", user.getId(),
                     "email", user.getEmail(),
-                    "role", user.getRole()
+                    "role", user.getRole(),
+                    "token", token
                 )
             );
 
